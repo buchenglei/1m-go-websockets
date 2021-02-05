@@ -1,0 +1,51 @@
+// Dev Container Setting For Vscode
+{
+    // define name of dev container
+    "name": "Dev-1m-Websocket",
+    // define tag of image
+    "image": "go-develop-env:1.15.6",
+    "build": {
+        "dockerfile": "Dockerfile",
+        "args": {
+            "GOVERSION": "1.15.6"
+        }
+    },
+    "runArgs": [
+        "--name=Dev-1m-Websocket",
+    ],
+    // An array of additional mount points to add to the container when created. 
+    "mounts": [
+        // 挂载指定go版本的已经编译好的二进制程序目录，避免重复编译
+        "source=gobin-cache-1156,target=/home/developer/go/bin/,type=volume"
+    ],
+    // Overrides the default local mount point for the workspace when the container is created. 
+    "workspaceMount": "source=${localWorkspaceFolder},target=/home/developer/go/projects/${localWorkspaceFolderBasename},type=bind,consistency=cached",
+    // Overrides the default local mount point for the workspace when the container is created. 
+    "workspaceFolder": "/home/developer/go/projects/${localWorkspaceFolderBasename}",
+    // An array of ports that should be forwarded from inside the container to the local machine.
+    "forwardPorts": [],
+    // A set of name-value pairs that sets or overrides environment variables for the container. 
+    "containerEnv": {},
+    // Add the IDs of extensions you want installed when the container is created.
+    "extensions": [
+        "golang.Go",
+        // "mutantdino.resourcemonitor"
+    ],
+    // Set *default* container specific settings.json values on container create.
+    "settings": {
+        "terminal.integrated.shell.linux": "/bin/bash",
+        "go.toolsManagement.checkForUpdates": "proxy",
+        "go.useLanguageServer": true,
+        "go.formatTool": "goimports",
+        "go.lintTool": "golangci-lint",
+        "go.testFlags": [
+            "-v"
+        ]
+    },
+    // Use 'forwardPorts' to make a list of ports inside the container available locally.
+    // "forwardPorts": [],
+    // Use 'postCreateCommand' to run commands after the container is created.
+    "postCreateCommand": "go mod download",
+    // Comment out connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
+    // "remoteUser": "developer"
+}
